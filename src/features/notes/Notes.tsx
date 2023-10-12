@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Card, Spin } from 'antd'
+import { Button, Card, message, Spin } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { fetchNotesAsync, notesState, onCreateNote, onUpdateNote, onDeleteNote } from './notesSlice'
 import { CreateNoteModal } from './CreateNoteModal'
@@ -26,6 +26,8 @@ export function Notes() {
             setCreateNoteModalShown(false)
             setEditNoteModalShown(false)
             setDeleteNoteModalShown(false)
+        } else if (notes.status === 'failed') {
+            message.error(notes.error)
         }
     }, [notes.status])
 

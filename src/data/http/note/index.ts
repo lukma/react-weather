@@ -1,7 +1,9 @@
 import { NoteModel } from "../../../features/notes/NoteModel"
 
+const baseUrl = "http://127.0.0.1:8080"
+
 export async function fetchNotes() {
-    const response = await fetch("http://127.0.0.1:8080/v1/notes")
+    const response = await fetch(`${baseUrl}/v1/notes`)
     const json = await response.json()
     return json.data 
 }
@@ -11,11 +13,17 @@ export async function createNote(note: NoteModel) {
     data.append("title", note.title)
     data.append("content", note.content)
 
-    const response = await fetch("http://127.0.0.1:8080/v1/notes", {
+    const response = await fetch(`${baseUrl}/v1/notes`, {
         method: "POST",
         body: data,
     })
-    return response.status
+
+    if (response.status !== 200) {
+        const json = await response.json()
+        return json.error.message
+    }
+
+    return null
 }
 
 export async function updateNote(note: NoteModel) {
@@ -23,16 +31,28 @@ export async function updateNote(note: NoteModel) {
     data.append("title", note.title)
     data.append("content", note.content)
 
-    const response = await fetch(`http://127.0.0.1:8080/v1/notes/${note.id}`, {
+    const response = await fetch(`${baseUrl}/v1/notes/${note.id}`, {
         method: "PATCH",
         body: data,
     })
-    return response.status
+
+    if (response.status !== 200) {
+        const json = await response.json()
+        return json.error.message
+    }
+
+    return null
 }
 
 export async function deleteNote(noteId: string) {
-    const response = await fetch(`http://127.0.0.1:8080/v1/notes/${noteId}`, {
+    const response = await fetch(`${baseUrl}/v1/notes/${noteId}`, {
         method: "DELETE",
     })
-    return response.status
+
+    if (response.status !== 200) {
+        const json = await response.json()
+        return json.error.message
+    }
+
+    return null
 }
