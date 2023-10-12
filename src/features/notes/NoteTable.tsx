@@ -37,6 +37,11 @@ export function NoteTable(props: INoteTableProps) {
     ]
 
     return (
-        <Table dataSource={props.data} columns={columns} />
+        <Table
+            dataSource={props.data.map((note) => {
+                return {...note, key: note.id}
+            })}
+            columns={columns}
+        />
     )
 }
