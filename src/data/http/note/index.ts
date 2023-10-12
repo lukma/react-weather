@@ -1,9 +1,9 @@
 import { NoteModel } from "../../../features/notes/NoteModel"
 
-const baseUrl = "http://127.0.0.1:8080"
+const apiBaseUrl = `${process.env.REACT_APP_API_BASE_URL}`
 
 export async function fetchNotes() {
-    const response = await fetch(`${baseUrl}/v1/notes`)
+    const response = await fetch(`${apiBaseUrl}/v1/notes`)
     const json = await response.json()
     return json.data 
 }
@@ -13,7 +13,7 @@ export async function createNote(note: NoteModel) {
     data.append("title", note.title)
     data.append("content", note.content)
 
-    const response = await fetch(`${baseUrl}/v1/notes`, {
+    const response = await fetch(`${apiBaseUrl}/v1/notes`, {
         method: "POST",
         body: data,
     })
@@ -31,7 +31,7 @@ export async function updateNote(note: NoteModel) {
     data.append("title", note.title)
     data.append("content", note.content)
 
-    const response = await fetch(`${baseUrl}/v1/notes/${note.id}`, {
+    const response = await fetch(`${apiBaseUrl}/v1/notes/${note.id}`, {
         method: "PATCH",
         body: data,
     })
@@ -45,7 +45,7 @@ export async function updateNote(note: NoteModel) {
 }
 
 export async function deleteNote(noteId: string) {
-    const response = await fetch(`${baseUrl}/v1/notes/${noteId}`, {
+    const response = await fetch(`${apiBaseUrl}/v1/notes/${noteId}`, {
         method: "DELETE",
     })
 
